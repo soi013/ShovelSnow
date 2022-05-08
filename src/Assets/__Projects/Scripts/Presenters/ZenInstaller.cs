@@ -1,5 +1,6 @@
 using JPLab2.Model;
 using JPLab2.View;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -14,6 +15,9 @@ namespace JPLab2.Presenter
         public override void InstallBindings()
         {
             Debug.Log($"{this.GetType().Name} {nameof(InstallBindings)} 00");
+            Container
+                .Bind<IScheduler>().FromInstance(Scheduler.MainThread)
+                .AsSingle();
 
             Container
                 .Bind<IPlayerModel>().To<PlayerModel>()
