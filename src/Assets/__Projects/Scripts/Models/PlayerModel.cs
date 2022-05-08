@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace JPLab2.Model
 {
-    internal class PlayerModel : IPlayerModel
+    public class PlayerModel : IPlayerModel
     {
         public IReadOnlyReactiveProperty<bool> IsDead { get; }
         public IReactiveProperty<Vector3> Position { get; } = new ReactiveProperty<Vector3>(Vector3.zero);

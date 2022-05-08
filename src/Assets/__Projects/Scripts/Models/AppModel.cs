@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace JPLab2.Model
 {
-    internal class AppModel : IAppModel
+    public class AppModel : IAppModel
     {
         public IReadOnlyReactiveProperty<AppState> State => state;
         private readonly ReactiveProperty<AppState> state = new(AppState.Initializing);

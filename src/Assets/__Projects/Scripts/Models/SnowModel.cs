@@ -6,7 +6,7 @@ using Zenject;
 
 namespace JPLab2.Model
 {
-    internal class SnowModel : ISnowModel
+    public class SnowModel : ISnowModel
     {
         IAppModel appModel;
         public float SnowFallIntervalMilliSeconds { get; set; } = 250;
