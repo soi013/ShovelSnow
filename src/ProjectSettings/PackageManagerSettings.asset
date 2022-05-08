@@ -39,7 +39,14 @@ MonoBehaviour:
     - com.neuecc
     m_IsDefault: 0
     m_Capabilities: 0
-  m_UserSelectedRegistryName: neuecc
+  - m_Id: scoped:boundfoxstudios
+    m_Name: boundfoxstudios
+    m_Url: https://package.openupm.com
+    m_Scopes:
+    - com.boundfoxstudios
+    m_IsDefault: 0
+    m_Capabilities: 0
+  m_UserSelectedRegistryName: boundfoxstudios
   m_UserAddingNewScopedRegistry: 0
   m_RegistryInfoDraft:
     m_Modified: 0
