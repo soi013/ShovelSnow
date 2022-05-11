@@ -1,11 +1,11 @@
 using JPLab2.Model;
 using JPLab2.View;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 
 namespace JPLab2.Presenter
 {
-
-    //public class PlayerPresenter : MonoBehaviour
     public class PlayerPresenter
     {
         private const float speedMove = 10;
@@ -20,18 +20,15 @@ namespace JPLab2.Presenter
 
             this.playerModel = playerModel;
             this.playerView = playerView;
+
+            this.playerView
+                .UpdateAsObservable()
+                .TakeWhile(_ => !playerModel.IsDead.Value)
+                .Subscribe(_ => Update());
         }
 
-        internal void Start()
+        private void Update()
         {
-            Debug.Log($"{this.GetType().Name} {nameof(Start)} 00");
-        }
-
-        public void Update()
-        {
-            if (playerModel.IsDead.Value)
-                return;
-
             Move();
             playerModel.Position.Value = playerView.transform.position;
         }
