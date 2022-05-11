@@ -31,8 +31,6 @@ namespace JPLab2.Presenter
         {
             Debug.Log($"{this.GetType().Name} {nameof(Start)} 00");
             appModel.Initialize();
-
-            snowP.Start();
         }
     }
 }

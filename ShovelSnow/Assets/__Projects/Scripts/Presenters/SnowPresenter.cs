@@ -17,11 +17,13 @@ namespace JPLab2.Presenter
 
             this.snowModel = snowModel;
             this.snowView = snowView;
+
+            BindWithModel();
         }
 
-        internal void Start()
+        private void BindWithModel()
         {
-            Debug.Log($"{this.GetType().Name} {nameof(Start)} 00");
+            Debug.Log($"{this.GetType().Name} {nameof(BindWithModel)} 00");
 
             snowModel.Snows.ObserveAdd()
                 .Select(s => s.Value)
