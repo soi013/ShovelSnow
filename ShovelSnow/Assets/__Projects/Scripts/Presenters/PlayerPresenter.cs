@@ -8,11 +8,12 @@ namespace JPLab2.Presenter
 {
     public class PlayerPresenter
     {
-        private const float speedMove = 10;
-        private const float speedRotate = 40;
+        private const float speedMove = 3f;
+        private float speedRotate = 1f;
 
         private readonly IPlayerModel playerModel;
         private readonly Player playerView;
+        private readonly Rigidbody playerBody;
 
         public PlayerPresenter(IPlayerModel playerModel, Player playerView)
         {
@@ -20,9 +21,10 @@ namespace JPLab2.Presenter
 
             this.playerModel = playerModel;
             this.playerView = playerView;
+            this.playerBody = playerView.GetComponent<Rigidbody>();
 
             this.playerView
-                .UpdateAsObservable()
+                .FixedUpdateAsObservable()
                 .TakeWhile(_ => !playerModel.IsDead.Value)
                 .Subscribe(_ => Update());
         }
@@ -36,9 +38,10 @@ namespace JPLab2.Presenter
         private void Move()
         {
             var verticalInput = Input.GetAxis("Vertical");
+            if (verticalInput == 0)
+                return;
 
-            //playerView.transform.Translate(speedMove * Time.deltaTime * verticalInput * Vector3.forward);
-            playerView.transform.Translate(speedMove * Time.deltaTime * verticalInput * Vector3.forward);
+            playerBody.velocity = speedMove * verticalInput * playerView.transform.forward;
 
             Rotation(verticalInput);
         }
@@ -50,7 +53,7 @@ namespace JPLab2.Presenter
             if (horizontalInput == 0)
                 return;
 
-            playerView.transform.Rotate(Vector3.up, Time.deltaTime * horizontalInput * verticalInput * speedRotate);
+            playerBody.angularVelocity = horizontalInput * verticalInput * speedRotate * playerView.transform.up;
         }
     }
 }
