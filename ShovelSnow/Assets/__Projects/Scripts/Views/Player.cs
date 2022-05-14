@@ -1,3 +1,4 @@
+using JPLab2.Infrastructure;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -30,10 +31,7 @@ namespace JPLab2.View
 
         private void Bind()
         {
-            Observable
-                .Merge(
-                   this.OnCollisionStayAsObservable().Where(x => IsGround(x)).Select(_ => true),
-                   this.OnCollisionExitAsObservable().Where(x => IsGround(x)).Select(_ => false))
+            this.IsTouchCollisionAsObservable(x => IsGround(x))
                 .Subscribe(x =>
                     isTouchingGround.Value = x);
 

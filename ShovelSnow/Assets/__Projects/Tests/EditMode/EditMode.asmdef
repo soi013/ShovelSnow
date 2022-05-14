@@ -8,7 +8,8 @@
         "UniRx",
         "UniTask",
         "Presenters",
-        "BoundfoxStudios.FluentAssertions"
+        "BoundfoxStudios.FluentAssertions",
+        "Infrastructure"
     ],
     "includePlatforms": [
         "Editor"
