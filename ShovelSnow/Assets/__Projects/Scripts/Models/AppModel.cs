@@ -1,4 +1,5 @@
-﻿using UniRx;
+﻿using System;
+using UniRx;
 using UnityEngine;
 
 namespace JPLab2.Model
@@ -8,6 +9,8 @@ namespace JPLab2.Model
         public IReadOnlyReactiveProperty<AppState> State => state;
         private readonly ReactiveProperty<AppState> state = new(AppState.Initializing);
 
+        public IReadOnlyReactiveProperty<float> PlayTime { get; }
+
         public AppModel(IPlayerModel playerModel)
         {
             Debug.Log($"{this.GetType().Name} ctor 00");
@@ -16,6 +19,11 @@ namespace JPLab2.Model
                 .Pairwise()
                 .Subscribe(p =>
                     Debug.Log($"{this.GetType().Name} StateChange {p.Previous} -> {p.Current}"));
+
+            PlayTime = Observable.Interval(TimeSpan.FromMilliseconds(100))
+                .Where(_ => State.Value == AppState.Playing)
+                .Select(_ => Time.realtimeSinceStartup)
+                .ToReadOnlyReactiveProperty();
 
             playerModel.IsDead
                 .Where(x => x)
@@ -38,6 +46,7 @@ namespace JPLab2.Model
     public interface IAppModel
     {
         IReadOnlyReactiveProperty<AppState> State { get; }
+        IReadOnlyReactiveProperty<float> PlayTime { get; }
 
         void DeathOfPlayer();
         void Initialize();

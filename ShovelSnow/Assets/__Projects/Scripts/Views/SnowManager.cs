@@ -16,11 +16,15 @@ namespace JPLab2.View
             Debug.Log($"{this.GetType().Name} {nameof(Start)} 00");
         }
 
-        public GameObject FallSnow(Vector3 position, float rotation) =>
-            Instantiate(
+        public GameObject FallSnow(Vector3 position)
+        {
+            float rotation = Random.Range(0, 90f);
+
+            return Instantiate(
                 snowPrefab,
                 position,
                 Quaternion.Euler(rotation, rotation / 2, 0f),
                 this.transform);
+        }
     }
 }

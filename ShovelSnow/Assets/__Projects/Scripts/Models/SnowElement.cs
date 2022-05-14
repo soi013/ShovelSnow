@@ -6,12 +6,13 @@ namespace JPLab2.Model
     {
         private readonly float snowFallRange = 1f;
 
-        public float PositionX { get; private set; }
-        public float PositionZ { get; private set; }
+        public Vector3 Position { get; }
         public SnowElement()
         {
-            PositionX = Random.Range(-snowFallRange, snowFallRange);
-            PositionZ = Random.Range(-snowFallRange, snowFallRange);
+            Position = new Vector3(
+                Random.Range(-snowFallRange, snowFallRange),
+                Random.Range(-snowFallRange, snowFallRange),
+                Random.Range(-snowFallRange, snowFallRange));
         }
     }
 }
