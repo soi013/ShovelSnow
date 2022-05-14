@@ -1,5 +1,6 @@
 using JPLab2.Model;
 using JPLab2.View;
+using System.Linq;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -9,11 +10,10 @@ namespace JPLab2.Presenter
     public class PlayerPresenter
     {
         private const float speedMove = 3f;
-        private float speedRotate = 1f;
+        private const float speedRotate = 1f;
 
         private readonly IPlayerModel playerModel;
         private readonly Player playerView;
-        private readonly Rigidbody playerBody;
 
         public PlayerPresenter(IPlayerModel playerModel, Player playerView)
         {
@@ -21,18 +21,26 @@ namespace JPLab2.Presenter
 
             this.playerModel = playerModel;
             this.playerView = playerView;
-            this.playerBody = playerView.GetComponent<Rigidbody>();
 
             this.playerView
                 .FixedUpdateAsObservable()
                 .TakeWhile(_ => !playerModel.IsDead.Value)
                 .Subscribe(_ => Update());
+
+            this.playerView.IsTouchingGround
+                .Subscribe(x =>
+                    playerModel.IsTouchingGround.Value = x);
         }
 
         private void Update()
         {
-            Move();
+            if (playerModel.CanMove.Value)
+            {
+                Move();
+            }
+
             playerModel.Position.Value = playerView.transform.position;
+
         }
 
         private void Move()
@@ -41,7 +49,7 @@ namespace JPLab2.Presenter
             if (verticalInput == 0)
                 return;
 
-            playerBody.velocity = speedMove * verticalInput * playerView.transform.forward;
+            playerView.Body.velocity = speedMove * verticalInput * playerView.transform.forward;
 
             Rotation(verticalInput);
         }
@@ -53,7 +61,7 @@ namespace JPLab2.Presenter
             if (horizontalInput == 0)
                 return;
 
-            playerBody.angularVelocity = horizontalInput * verticalInput * speedRotate * playerView.transform.up;
+            playerView.Body.angularVelocity = horizontalInput * verticalInput * speedRotate * playerView.transform.up;
         }
     }
 }

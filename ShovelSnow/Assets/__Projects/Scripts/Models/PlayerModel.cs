@@ -7,6 +7,8 @@ namespace JPLab2.Model
     {
         public IReadOnlyReactiveProperty<bool> IsDead { get; }
         public IReactiveProperty<Vector3> Position { get; } = new ReactiveProperty<Vector3>(Vector3.zero);
+        public IReactiveProperty<bool> IsTouchingGround { get; } = new ReactiveProperty<bool>();
+        public IReadOnlyReactiveProperty<bool> CanMove { get; }
 
         public PlayerModel()
         {
@@ -16,6 +18,12 @@ namespace JPLab2.Model
                         .Skip(1)
                         .Select(x => IsDeadByPosition(x))
                         .ToReadOnlyReactiveProperty(false);
+
+            CanMove = Observable.CombineLatest(
+                    IsTouchingGround,
+                    IsDead,
+                    (ground, dead) => ground && !dead)
+                .ToReadOnlyReactiveProperty();
         }
 
         private bool IsDeadByPosition(Vector3 postionPlayer)
@@ -27,7 +35,9 @@ namespace JPLab2.Model
 
     public interface IPlayerModel
     {
-        IReactiveProperty<Vector3> Position { get; }
         IReadOnlyReactiveProperty<bool> IsDead { get; }
+        IReactiveProperty<Vector3> Position { get; }
+        IReactiveProperty<bool> IsTouchingGround { get; }
+        IReadOnlyReactiveProperty<bool> CanMove { get; }
     }
 }
