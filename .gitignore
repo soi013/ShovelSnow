@@ -92,4 +92,4 @@ Thumbs.db
 *.pyc
 
 # Optional, but I don't like having my build folder added to this public repo
-*/com.unity.connect.share/Settings.json
+**/com.unity.connect.share/Settings.json
