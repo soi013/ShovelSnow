@@ -25,6 +25,10 @@ namespace JPLab2.Presenter
             playerView.IsTouchingGround
                 .Subscribe(x =>
                     playerModel.IsTouchingGround.Value = x);
+
+            playerView.SnowsHit
+                .Subscribe(x =>
+                    playerModel.SnowsHit.Value = x);
         }
     }
 }
