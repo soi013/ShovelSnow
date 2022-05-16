@@ -10,7 +10,9 @@ namespace JPLab2.Tests
         [Test]
         public void AppState_NormalOld_StartToEnd()
         {
-            var playerM = new PlayerModel();
+            //テストを早く終わらせるため、100倍速に設定する
+            var appSpeed = new AppSpeed(100);
+            var playerM = new PlayerModel(appSpeed);
             var appM = new AppModel(playerM);
 
             //デフォルト状態は初期化中
@@ -28,7 +30,9 @@ namespace JPLab2.Tests
         [Test]
         public void AppState_NormalFluent_StartToEnd()
         {
-            var playerM = new PlayerModel();
+            //テストを早く終わらせるため、100倍速に設定する
+            var appSpeed = new AppSpeed(100);
+            var playerM = new PlayerModel(appSpeed);
             var appM = new AppModel(playerM);
 
             //デフォルト状態は初期化中

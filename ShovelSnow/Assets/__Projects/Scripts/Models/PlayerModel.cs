@@ -15,11 +15,11 @@ namespace JPLab2.Model
         public IReadOnlyReactiveProperty<bool> CanMove { get; }
         public ReactiveProperty<IReadOnlyList<string>> SnowsHit { get; } = new(new string[0]);
 
-        public PlayerModel()
+        public PlayerModel(AppSpeed appSpeed)
         {
             Debug.Log($"{this.GetType().Name} ctor 00");
 
-            double thresholdDeathOnSnowSec = 3;
+            double thresholdDeathOnSnowMilliSec = 3000;
             IObservable<bool> isDeadByPositionStream = Position
                 .Skip(1)
                 .Select(x => IsDeadByPosition(x))
@@ -31,7 +31,7 @@ namespace JPLab2.Model
 
             IObservable<bool> isDeadBySnowStream = SnowsHit
                 .Select(x => IsTooManySnowHits(x))
-                .Buffer(TimeSpan.FromSeconds(thresholdDeathOnSnowSec))
+                .Buffer(TimeSpan.FromMilliseconds(thresholdDeathOnSnowMilliSec / appSpeed.Gain))
                 .Select(x => x.Any() && x.All(x => x))
                 .Do(x =>
                 {

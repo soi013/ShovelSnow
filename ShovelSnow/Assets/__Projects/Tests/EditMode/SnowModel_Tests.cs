@@ -12,11 +12,11 @@ namespace JPLab2.Tests
         [UnityTest]
         public IEnumerator Snows_Normal_IncreaseCount() => UniTask.ToCoroutine(async () =>
         {
-            var playerM = new PlayerModel();
-            var appM = new AppModel(playerM);
-
             //テストを早く終わらせるため、100倍速に設定する
             var appSpeed = new AppSpeed(100);
+            var playerM = new PlayerModel(appSpeed);
+            var appM = new AppModel(playerM);
+
             var snowM = new SnowModel(appM, appSpeed);
 
             //最初は雪がない
