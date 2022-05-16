@@ -11,7 +11,9 @@ namespace JPLab2.Model
 
         public IReadOnlyReactiveProperty<float> PlayTime { get; }
 
-        public AppModel(IPlayerModel playerModel)
+        private readonly ReadOnlyReactiveProperty<float> startPlayTime;
+
+        public AppModel(IPlayerModel playerModel, AppSpeed appSpeed)
         {
             Debug.Log($"{this.GetType().Name} ctor 00");
 
@@ -20,9 +22,16 @@ namespace JPLab2.Model
                 .Subscribe(p =>
                     Debug.Log($"{this.GetType().Name} StateChange {p.Previous} -> {p.Current}"));
 
-            PlayTime = Observable.Interval(TimeSpan.FromMilliseconds(100))
+            startPlayTime = State
+                   .Pairwise()
+                   .Where(p => p.Previous == AppState.Initializing && p.Current == AppState.Playing)
+                   .Select(p => Time.realtimeSinceStartup * appSpeed.Gain)
+                   .ToReadOnlyReactiveProperty(0f);
+
+            PlayTime = Observable.Interval(TimeSpan.FromMilliseconds(100 / appSpeed.Gain))
                 .Where(_ => State.Value == AppState.Playing)
-                .Select(_ => Time.realtimeSinceStartup)
+                .Select(_ => Time.realtimeSinceStartup * appSpeed.Gain)
+                .Select(t => t - startPlayTime.Value)
                 .ToReadOnlyReactiveProperty();
 
             playerModel.IsDead

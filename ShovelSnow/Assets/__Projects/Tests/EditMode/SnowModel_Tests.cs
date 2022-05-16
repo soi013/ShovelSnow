@@ -15,7 +15,7 @@ namespace JPLab2.Tests
             //テストを早く終わらせるため、100倍速に設定する
             var appSpeed = new AppSpeed(100);
             var playerM = new PlayerModel(appSpeed);
-            var appM = new AppModel(playerM);
+            var appM = new AppModel(playerM, appSpeed);
 
             var snowM = new SnowModel(appM, appSpeed);
 
