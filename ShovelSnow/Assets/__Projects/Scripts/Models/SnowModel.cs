@@ -36,7 +36,7 @@ namespace JPLab2.Model
                  .Subscribe(x => snows.Add(x));
 
             const int intervalUpdateFallCountMilliSec = 10000;
-            const int baseFallCount = 2.0;
+            const int baseFallCount = 2;
 
             CurrentFallCount = Observable.Timer(TimeSpan.Zero, TimeSpan.FromMilliseconds(intervalUpdateFallCountMilliSec / appSpeed.Gain))
                 .TakeWhile(_ => appModel.State.Value != AppState.GameOver)
