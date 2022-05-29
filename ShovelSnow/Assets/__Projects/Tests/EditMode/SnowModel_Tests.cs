@@ -3,6 +3,7 @@ using FluentAssertions;
 using JPLab2.Model;
 using System.Collections;
 using UniRx;
+using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace JPLab2.Tests
@@ -49,6 +50,32 @@ namespace JPLab2.Tests
                 .Should().HaveCountGreaterThan(1000);
 
             playerM.Position.Value = new UnityEngine.Vector3(0, -100, 0);
+        });
+
+        [UnityTest]
+        public IEnumerator Snows_DropPlate_DecreaseCount() => UniTask.ToCoroutine(async () =>
+        {
+            //テストを早く終わらせるため、100倍速に設定する
+            var appSpeed = new AppSpeed(100);
+            var playerM = new PlayerModel(appSpeed);
+            var appM = new AppModel(playerM, appSpeed);
+
+            var snowM = new SnowModel(appM, appSpeed);
+
+            appM.Initialize();
+
+            await UniTask.Delay(50);
+
+            snowM.Snows
+                .Should().HaveCountGreaterThan(5);
+
+            var countSnowBefore = snowM.Snows.Count;
+
+            SnowElement targetSnow = snowM.Snows[0];
+            targetSnow.Position = new Vector3(targetSnow.Position.x, -1, targetSnow.Position.z);
+
+            snowM.Snows
+            .Should().HaveCountLessThan(countSnowBefore);
         });
     }
 }
