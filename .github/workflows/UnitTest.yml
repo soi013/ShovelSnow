@@ -13,6 +13,7 @@ jobs:
           - .
         unityVersion:
           - 2019.2.11f1
+          - 2021.3.2f1
         testMode:
         # Playmode test is nothing yet
         #  - playmode
