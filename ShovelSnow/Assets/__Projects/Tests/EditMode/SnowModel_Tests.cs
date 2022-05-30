@@ -49,7 +49,8 @@ namespace JPLab2.Tests
             snowM.Snows
                 .Should().HaveCountGreaterThan(1000);
 
-            playerM.Position.Value = new UnityEngine.Vector3(0, -100, 0);
+            //GameOver
+            playerM.Position.Value = new Vector3(0, -100, 0);
         });
 
         [UnityTest]
@@ -69,13 +70,17 @@ namespace JPLab2.Tests
             snowM.Snows
                 .Should().HaveCountGreaterThan(5);
 
+            //GameOver
+            playerM.Position.Value = new Vector3(0, -100, 0);
+
             var countSnowBefore = snowM.Snows.Count;
 
             SnowElement targetSnow = snowM.Snows[0];
-            targetSnow.Position = new Vector3(targetSnow.Position.x, -1, targetSnow.Position.z);
+            Vector3 position = targetSnow.Position.Value;
+            targetSnow.Position.Value = new Vector3(position.x, -1, position.z);
 
             snowM.Snows
-            .Should().HaveCountLessThan(countSnowBefore);
+                .Should().HaveCountLessThan(countSnowBefore);
         });
     }
 }

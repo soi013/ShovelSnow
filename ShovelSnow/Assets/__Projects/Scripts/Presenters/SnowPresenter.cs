@@ -12,16 +12,15 @@ namespace JPLab2.Presenter
             Debug.Log($"{this.GetType().Name} ctor 00");
 
             const float scaleSnowFallRangeXZ = 7f;
-            const float scaleSnowFallRangeY = 2f;
-            const float offsetY = 20f;
+            const float scaleSnowFallRangeY = 20f;
 
             snowModel.Snows.ObserveAdd()
-                        .Select(s => s.Value)
+                        .Select(s => s.Value.Position.Value)
                         .Select(s =>
                              new Vector3(
-                                s.Position.x * scaleSnowFallRangeXZ,
-                                s.Position.y * scaleSnowFallRangeY + offsetY,
-                                s.Position.z * scaleSnowFallRangeXZ))
+                                s.x * scaleSnowFallRangeXZ,
+                                s.y * scaleSnowFallRangeY,
+                                s.z * scaleSnowFallRangeXZ))
                         .Subscribe(s =>
                             snowView.FallSnow(s));
         }

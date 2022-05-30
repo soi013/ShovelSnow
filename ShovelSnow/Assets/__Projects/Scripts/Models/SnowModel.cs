@@ -33,7 +33,7 @@ namespace JPLab2.Model
                  .TakeWhile(_ => appModel.State.Value != AppState.GameOver)
                  .SelectMany(index => Enumerable.Range(0, CurrentFallCount.Value)
                     .Select(_ => new SnowElement()))
-                 .Subscribe(x => snows.Add(x));
+                 .Subscribe(x => AddWithRemoveSubscribe(x));
 
             const int intervalUpdateFallCountMilliSec = 10000;
             const int baseFallCount = 2;
@@ -45,6 +45,17 @@ namespace JPLab2.Model
 
             CurrentFallCount.Subscribe(x =>
                 Debug.Log($"Fall speed changed. count = {x}"));
+        }
+
+        private void AddWithRemoveSubscribe(SnowElement elem)
+        {
+            snows.Add(elem);
+
+            elem.IsAlive
+                .Where(x => !x)
+                .Take(1)
+                .Do(x => Debug.Log($"Snow({elem}) Drop to plane."))
+                .Subscribe(_ => snows.Remove(elem));
         }
     }
 
